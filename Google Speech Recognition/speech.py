@@ -39,6 +39,8 @@ class Speech:
 
 if __name__ == '__main__':
   s = Speech()
-  s.read_original("/Users/samantharain/Desktop/AI-assignments/Google Speech Recognition/original.txt")
-  s.conv_audio("/Users/samantharain/Desktop/AI-assignments/Google Speech Recognition/Speech/")
+  #Insert path to get to original.txt 
+  s.read_original("/original.txt")
+  #Insert Directory path where .wav files are located
+  s.conv_audio("")
   s.comp_string()
