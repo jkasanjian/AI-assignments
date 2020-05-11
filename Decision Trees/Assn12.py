@@ -32,10 +32,10 @@ class Evaluation:
         k = list(self.bagging_score.keys())
         v = list(self.bagging_score.values())
         plt.plot(k, v)
-        plt.axis([0,41,0,1,])
+        plt.axis([0,39,0,1])
         plt.title("Bagging Graph")
-        plt.show()
         plt.savefig("Bagging.png")
+        plt.show()
 
 
 
