@@ -31,7 +31,7 @@ class Evaluation:
                 tree.DecisionTreeClassifier(), n_estimators=50*i + 1).fit(self.X_train, self.y_train)
             self.bagging_score[50*i +1] = bagging.score(self.X_test, self.y_test)
         print(self.bagging_score)
-        
+
 
 
     def forest(self):
@@ -39,11 +39,11 @@ class Evaluation:
         for i in range(1, 102):
             max_feat = random.randrange(1, 31)
             max_list.append(max_feat)
-            
+
             forest = ensemble.RandomForestClassifier(
                 n_estimators=20, max_features=max_feat).fit(self.X_train, self.y_train)
             self.forest_score[i] = forest.score(self.X_test, self.y_test)
-            
+
         x_vals = np.array(list(self.forest_score.keys()))
         y_vals = np.array(max_list)
         z_vals = np.array(list(self.forest_score.values()))
@@ -59,7 +59,18 @@ class Evaluation:
 
 
     def boost(self):
-        return 0
+        i = 1
+        while (i < 21):
+            boost = ensemble.AdaBoostClassifier(tree.DecisionTreeClassifier(),
+                n_estimators=i).fit(self.X_train, self.y_train)
+            self.boost_score[i] = boost.score(self.X_test, self.y_test)
+            i += 1
+        print(self.boost_score)
+        x = list(self.boost_score.keys())
+        y = list(self.boost_score.values())
+        plt.plot(x, y)
+        plt.axis([0,20,0,1])
+        plt.show()
 
 
     def summary(self):
