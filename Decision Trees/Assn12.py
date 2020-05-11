@@ -19,18 +19,23 @@ class Evaluation:
         self.forest_score = {}
 
     def decision_tree(self):
-        t1 = tree.DecisionTreeClassifier(
-            criterion="gini").fit(self.X_train, self.y_train)
-        tree_score = t1.score(self.X_test, self.y_test)
-        print(tree_score)
+        tree_one = tree.DecisionTreeClassifier(criterion="gini").fit(self.X_train, self.y_train)
+        tree_score = tree_one.score(self.X_test, self.y_test)
+        #print(tree_score)
 
 
     def bagging(self):
-        for i in range(10):
-            bagging = ensemble.BaggingClassifier(
-                tree.DecisionTreeClassifier(), n_estimators=50*i + 1).fit(self.X_train, self.y_train)
-            self.bagging_score[50*i +1] = bagging.score(self.X_test, self.y_test)
-        print(self.bagging_score)
+        for i in range(40):
+            bagging = ensemble.BaggingClassifier(tree.DecisionTreeClassifier(), n_estimators=i+1).fit(self.X_train, self.y_train)
+            self.bagging_score[i] = bagging.score(self.X_test, self.y_test)
+        #print(self.bagging_score)
+        k = list(self.bagging_score.keys())
+        v = list(self.bagging_score.values())
+        plt.plot(k, v)
+        plt.axis([0,41,0,1,])
+        plt.title("Bagging Graph")
+        plt.show()
+        plt.savefig("Bagging.png")
 
 
 
@@ -40,8 +45,7 @@ class Evaluation:
             max_feat = random.randrange(1, 31)
             max_list.append(max_feat)
 
-            forest = ensemble.RandomForestClassifier(
-                n_estimators=20, max_features=max_feat).fit(self.X_train, self.y_train)
+            forest = ensemble.RandomForestClassifier(n_estimators=20, max_features=max_feat).fit(self.X_train, self.y_train)
             self.forest_score[i] = forest.score(self.X_test, self.y_test)
 
         x_vals = np.array(list(self.forest_score.keys()))
@@ -53,7 +57,7 @@ class Evaluation:
         surf = axes.plot_trisurf(x_vals, y_vals, z_vals, cmap=cm.gnuplot, linewidth=0.5)
         graph.colorbar(surf, shrink=0.5, aspect=5)
         plt.title('Forest Graph')
-        plt.savefig('forest.png')
+        plt.savefig('Forest.png')
         plt.show()
 
 
@@ -61,16 +65,16 @@ class Evaluation:
     def boost(self):
         i = 1
         while (i < 21):
-            boost = ensemble.AdaBoostClassifier(tree.DecisionTreeClassifier(),
-                n_estimators=i).fit(self.X_train, self.y_train)
+            boost = ensemble.AdaBoostClassifier(tree.DecisionTreeClassifier(),n_estimators=i).fit(self.X_train, self.y_train)
             self.boost_score[i] = boost.score(self.X_test, self.y_test)
             i += 1
-        print(self.boost_score)
+        #print(self.boost_score)
         x = list(self.boost_score.keys())
         y = list(self.boost_score.values())
         plt.plot(x, y)
         plt.axis([0,20,0,1])
         plt.title('Boost Graph')
+        plt.savefig("Boost.png")
         plt.show()
 
 
@@ -84,4 +88,4 @@ if __name__ == '__main__':
     exp.bagging()
     exp.forest()
     exp.boost()
-    exp.summary()
+    # exp.summary()
