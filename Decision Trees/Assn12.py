@@ -1,6 +1,11 @@
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn import tree, ensemble
+import random
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import cm
+from mpl_toolkits.mplot3d import Axes3D
 
 
 class Evaluation:
@@ -30,7 +35,27 @@ class Evaluation:
 
 
     def forest(self):
-        return 0
+        max_list = []
+        for i in range(1, 102):
+            max_feat = random.randrange(1, 31)
+            max_list.append(max_feat)
+            
+            forest = ensemble.RandomForestClassifier(
+                n_estimators=20, max_features=max_feat).fit(self.X_train, self.y_train)
+            self.forest_score[i] = forest.score(self.X_test, self.y_test)
+            
+        x_vals = np.array(list(self.forest_score.keys()))
+        y_vals = np.array(max_list)
+        z_vals = np.array(list(self.forest_score.values()))
+
+        graph = plt.figure()
+        axes = Axes3D(graph)
+        surf = axes.plot_trisurf(x_vals, y_vals, z_vals, cmap=cm.gnuplot, linewidth=0.5)
+        graph.colorbar(surf, shrink=0.5, aspect=5)
+        plt.title('Forest Graph')
+        plt.savefig('forest.png')
+        plt.show()
+
 
 
     def boost(self):
