@@ -20,7 +20,7 @@ class Evaluation:
 
     def decision_tree(self):
         tree_one = tree.DecisionTreeClassifier(criterion="gini").fit(self.X_train, self.y_train)
-        tree_score = tree_one.score(self.X_test, self.y_test)
+        self.tree_score = tree_one.score(self.X_test, self.y_test)
         #print(tree_score)
 
 
