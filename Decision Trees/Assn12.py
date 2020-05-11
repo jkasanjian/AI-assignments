@@ -70,6 +70,7 @@ class Evaluation:
         y = list(self.boost_score.values())
         plt.plot(x, y)
         plt.axis([0,20,0,1])
+        plt.title('Boost Graph')
         plt.show()
 
 
